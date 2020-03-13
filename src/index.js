@@ -110,7 +110,7 @@ export default class RNPickerSelect extends PureComponent {
             if (item.key && key) {
                 return isEqual(item.key, key);
             }
-            return isEqual(item.value, value);
+            return isEqual(item.value || item.variation_code, value);
         });
         if (idx === -1) {
             idx = 0;
@@ -139,7 +139,7 @@ export default class RNPickerSelect extends PureComponent {
 
         if (itemsChanged || selectedItemChanged) {
             if (selectedItemChanged) {
-                nextProps.onValueChange(selectedItem.value, idx);
+                nextProps.onValueChange(selectedItem.value || selectedItem.name, idx);
             }
 
             return {
@@ -220,7 +220,7 @@ export default class RNPickerSelect extends PureComponent {
         const { placeholder, placeholderTextColor, style } = this.props;
         const { selectedItem } = this.state;
 
-        if (!isEqual(placeholder, {}) && selectedItem.label === placeholder.label) {
+        if (!isEqual(placeholder, {}) && selectedItem.label || selectedItem.name === placeholder.label || selectedItem.name) {
             return {
                 ...defaultStyles.placeholder,
                 color: placeholderTextColor, // deprecated
@@ -283,7 +283,7 @@ export default class RNPickerSelect extends PureComponent {
                 <Picker.Item
                     label={item.label || item.name}
                     value={item.value || item.variation_code}
-                    key={item.key || item.label}
+                    key={item.key || item.label || item.name}
                     color={item.color}
                 />
             );
@@ -424,7 +424,7 @@ export default class RNPickerSelect extends PureComponent {
                         Platform.OS === 'ios' ? style.inputIOS : style.inputAndroid,
                         this.getPlaceholderStyle(),
                     ]}
-                    value={selectedItem.displayValue ? selectedItem.value : selectedItem.label}
+                    value={selectedItem.displayValue ? selectedItem.value : selectedItem.label || selectedItem.name}
                     ref={this.setInputRef}
                     editable={false}
                     {...textInputProps}
@@ -477,7 +477,7 @@ export default class RNPickerSelect extends PureComponent {
                         <Picker
                             testID="ios_picker"
                             onValueChange={this.onValueChange}
-                            selectedValue={selectedItem.value}
+                            selectedValue={selectedItem.value || selectedItem.name}
                             {...pickerProps}
                         >
                             {this.renderPickerItems()}
