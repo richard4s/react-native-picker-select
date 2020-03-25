@@ -139,7 +139,7 @@ export default class RNPickerSelect extends PureComponent {
 
         if (itemsChanged || selectedItemChanged) {
             if (selectedItemChanged) {
-                nextProps.onValueChange(selectedItem.value || selectedItem.name, idx);
+                nextProps.onValueChange(selectedItem.value || selectedItem.bank_name, idx);
             }
 
             return {
@@ -220,7 +220,7 @@ export default class RNPickerSelect extends PureComponent {
         const { placeholder, placeholderTextColor, style } = this.props;
         const { selectedItem } = this.state;
 
-        if (!isEqual(placeholder, {}) && selectedItem.label || selectedItem.name === placeholder.label || selectedItem.name) {
+        if (!isEqual(placeholder, {}) && selectedItem.label || selectedItem.bank_name === placeholder.label || selectedItem.bank_name) {
             return {
                 ...defaultStyles.placeholder,
                 color: placeholderTextColor, // deprecated
@@ -424,7 +424,7 @@ export default class RNPickerSelect extends PureComponent {
                         Platform.OS === 'ios' ? style.inputIOS : style.inputAndroid,
                         this.getPlaceholderStyle(),
                     ]}
-                    value={selectedItem.displayValue ? selectedItem.value : selectedItem.label || selectedItem.name}
+                    value={selectedItem.displayValue ? selectedItem.value : selectedItem.label || selectedItem.bank_name}
                     ref={this.setInputRef}
                     editable={false}
                     {...textInputProps}
@@ -477,7 +477,7 @@ export default class RNPickerSelect extends PureComponent {
                         <Picker
                             testID="ios_picker"
                             onValueChange={this.onValueChange}
-                            selectedValue={selectedItem.value || selectedItem.name}
+                            selectedValue={selectedItem.value || selectedItem.bank_name}
                             {...pickerProps}
                         >
                             {this.renderPickerItems()}
